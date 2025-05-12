@@ -2,14 +2,29 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 from uuid import uuid4, UUID
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
-# Define the schema for a Todo
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Frontend origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Or  ["GET", "POST", "PUT", "DELETE"]
+    allow_headers=["*"],
+)
+
+
+#  schema for a Todo
 class Todo(BaseModel):
     id: UUID
     text: str
     completed: bool = False
+
+
+class TodoCreate(BaseModel):
+    text: str
 
 # In-memory list to store todos
 todos: List[Todo] = []
@@ -23,10 +38,13 @@ def get_todos():
     return todos
 
 @app.post("/todos", response_model=Todo)
-def create_todo(todo: Todo):
-    todo.id = uuid4()  # Generates a unique UUID
-    todos.append(todo)
-    return todo
+def create_todo(todo_data: TodoCreate):
+    print(todo_data)  # Log the received data
+    new_todo = Todo(id=uuid4(), text=todo_data.text, completed=False)
+    todos.append(new_todo)
+    return new_todo
+
+
 
 
 @app.delete("/todos/{todo_id}", response_model=Todo)
@@ -34,7 +52,7 @@ def delete_todo(todo_id: UUID):
     for todo in todos:
         if todo.id == todo_id:
             todos.remove(todo)
-            return {"detail": "Todo deleted successfully"}
+            return todo
 
     raise HTTPException(status_code=404, detail="Todo not found")
 

@@ -1,15 +1,26 @@
 import {useState} from "react";
+import axios from "axios";
+
 
 export default function TodoForm({ addTodo }: { addTodo: (text: string) => void }) {
     const [text, setText] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (text.trim()) {
-      addTodo(text);
-      setText(""); // Clear input after submit
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (text.trim()) {
+    try {
+  
+      await addTodo(text);
+      setText("");
+    } catch (error) {
+      console.error("Error adding todo:", error);
     }
-  };
+  }
+};
+
+
+
+
 
 
 
