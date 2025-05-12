@@ -6,7 +6,14 @@ import TodoList from "../app/components/TodoList";
 import { fetchTodos, createTodo, deleteTodoById, toggleTodoStatus } from "../app/lib/api.ts";
 
 export default function Home() {
-  const [todos, setTodos] = useState<any[]>([]);
+
+  interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   // 🔁 Fetch todos when component mounts
   useEffect(() => {

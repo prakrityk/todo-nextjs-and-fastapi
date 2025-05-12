@@ -8,27 +8,22 @@ export const fetchTodos = async () => {
   return response.data;
 };
 
+export interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+}
 
 
-export async function createTodo(text: string) {
-    console.log("Sending to backend:", text); 
+export async function createTodo(text: string): Promise<Todo> {
   try {
-    const response = await axios.post(`${API_BASE_URL}/todos`, {
-      text, // Send only the `text` property in the request body
-    });
-
-    console.log('Response from server:', response.data); // Log the response data
-    return response.data; // Return the created todo item
-  } catch (error: any) {
-    if (error.response) {
-      console.error('Backend returned error:', error.response.data); // Log backend error message
-      console.error('Error status:', error.response.status); // Log status code
-    } else {
-      console.error('Network error or no response:', error.message); // Log network error message
-    }
-    throw error; // Rethrow the error for further handling
+    const response = await axios.post(`${API_BASE_URL}/todos`, { text });
+    return response.data as Todo;
+  } catch (error: unknown) {
+    throw error;
   }
 }
+
 
 
 export const toggleTodoStatus = async (id: string) => {
