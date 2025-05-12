@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import TodoForm from "../app/components/TodoForm";
 import TodoList from "../app/components/TodoList";
-import { fetchTodos, createTodo, deleteTodoById, toggleTodoStatus } from "../app/lib/api.ts";
+import { fetchTodos, createTodo, deleteTodoById, toggleTodoStatus } from "../app/lib/api";
 
 export default function Home() {
 
