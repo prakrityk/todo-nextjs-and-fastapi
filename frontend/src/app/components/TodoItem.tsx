@@ -1,4 +1,9 @@
-export default function TodoItem({ todo, deleteTodo, toggleTodo }: { todo: any, deleteTodo: (id: string) => void, toggleTodo: (id: string) => void }) {
+interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+export default function TodoItem({ todo, deleteTodo, toggleTodo }: { todo: Todo, deleteTodo: (id: string) => void, toggleTodo: (id: string) => void }) {
     return (
       <li className="flex justify-between items-center px-4 py-2">
   <div className="flex items-center gap-2">
